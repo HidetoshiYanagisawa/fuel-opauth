@@ -11,6 +11,11 @@
  * @license      MIT License
  */
 
+/**
+* Based on https://developers.facebook.com/docs/
+* @auther kdotsaito <k.saito.8.3@gmail.com>
+*/
+
 namespace Opauth;
 
 class FacebookStrategy extends OpauthStrategy{
@@ -27,6 +32,8 @@ class FacebookStrategy extends OpauthStrategy{
 	 */
 	public $defaults = array(
 		'redirect_uri' => '{complete_url_to_strategy}int_callback'
+		'scope' => array('email', 'user_friends'), //add scope which you need
+		'fields' => 'email, first_name, last_name, name, gnder', //add fields which you need
 	);
 
 	/**
@@ -126,7 +133,11 @@ class FacebookStrategy extends OpauthStrategy{
 	 * @return array Parsed JSON results
 	 */
 	private function me($access_token){
-		$me = $this->serverGet('https://graph.facebook.com/me', array('access_token' => $access_token), null, $headers);
+		$data = array('access_token');
+		if(!empty($this->strategy['fields'])){
+			$data['fields'] = $this->strategy['fields'];
+		}
+		$me = $this->serverGet('https://graph.facebook.com/me', $data, null, $headers);
 		if (!empty($me)){
 			return json_decode($me);
 		}
