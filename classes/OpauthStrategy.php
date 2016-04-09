@@ -467,7 +467,7 @@ class OpauthStrategy {
 	}
 	
 	/**
-	 * Replace defined env values enclused in {} with values from $dictionary
+	 * Replace defined env values enclosed in {} with values from $dictionary
 	 * 
 	 * @param string $value Input string
 	 * @param array $dictionary Dictionary to lookup values from
